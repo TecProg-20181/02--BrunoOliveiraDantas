@@ -37,13 +37,6 @@ class Word:
         return guessed
 
     def isWordGuessed(self):
-
-    #    for letter in secretWord:
-    #        if letter in secretLetters:
-    #            secretLetters.append(letter)
-    #        else:
-    #            pass
-
         for letter in self.secretWord:
             if letter in self.lettersGuessed:
                 pass
@@ -51,6 +44,18 @@ class Word:
                 return False
 
         return True
+
+    def availableWords(self):
+        if self.isWordGuessed() == False and self.guesses > 0:
+                return True
+        else:
+                return False
+
+    def endMenssenger (self):
+        if self.isWordGuessed() == True:
+            print 'Congratulations, you won!'
+        else:
+            print 'Sorry, you ran out of guesses. The word was ', self.secretWord, '.'
 
 
 def hangman():
@@ -61,10 +66,9 @@ def hangman():
     print 'I am thinking of a word that is', len(word.secretWord), ' letters long.'
     print '-------------'
 
-    while  word.isWordGuessed() == False and guesses >0:
+    while  word.availableWords():
         print 'You have ', guesses, 'guesses left.'
 
-        #available = word.getAvailableLetters()
         for letter in word.availableLetters:
             if letter in word.lettersGuessed:
                 word.availableLetters = word.availableLetters.replace(letter, '')
@@ -86,10 +90,7 @@ def hangman():
         print '------------'
 
     else:
-        if word.isWordGuessed() == True:
-            print 'Congratulations, you won!'
-        else:
-            print 'Sorry, you ran out of guesses. The word was ', word.secretWord, '.'
+        word.endMenssenger()
 
 
 hangman()
