@@ -26,6 +26,15 @@ class Word:
         print "  ", len(wordlist), "words loaded."
         return random.choice(wordlist)
 
+    def getGuessedWord(self):
+        guessed = ''
+        for letter in self.secretWord:
+                if letter in self.lettersGuessed:
+                    guessed += letter
+                else:
+                    guessed += '_ '
+                    
+        return guessed
 
     def isWordGuessed(self):
 
@@ -43,19 +52,7 @@ class Word:
 
         return True
 
-    def getGuessedWord(self):
 
-         guessed = ''
-
-
-         return guessed
-
-    # def getAvailableLetters(self):
-    #     import string
-    #     # 'abcdefghijklmnopqrstuvwxyz'
-    #     available = string.ascii_lowercase
-    #     return available
-    
 def hangman():
     guesses = 8
     word = Word(guesses)
@@ -75,38 +72,17 @@ def hangman():
         print 'Available letters', word.availableLetters
         letter = raw_input('Please guess a letter: ')
         if letter in word.lettersGuessed:
+            print 'Oops! You have already guessed that letter: ', word.getGuessedWord()
 
-            guessed = word.getGuessedWord()
-            for letter in word.secretWord:
-                if letter in word.lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
-
-            print 'Oops! You have already guessed that letter: ', guessed
         elif letter in word.secretWord:
             word.lettersGuessed.append(letter)
+            print 'Good Guess: ', word.getGuessedWord()
 
-            guessed = word.getGuessedWord()
-            for letter in word.secretWord:
-                if letter in word.lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
-
-            print 'Good Guess: ', guessed
         else:
             guesses -=1
             word.lettersGuessed.append(letter)
+            print 'Oops! That letter is not in my word: ', word.getGuessedWord()
 
-            guessed = word.getGuessedWord()
-            for letter in word.secretWord:
-                if letter in word.lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
-
-            print 'Oops! That letter is not in my word: ',  guessed
         print '------------'
 
     else:
