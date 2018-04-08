@@ -51,6 +51,19 @@ class Word:
         else:
                 return False
 
+    def diffrentLetters(self, secretWord):
+        diffrentLetters = []
+        for letter in secretWord:
+            if letter not in diffrentLetters:
+                diffrentLetters.append(letter)
+        return len(diffrentLetters)
+
+    def startMensseger (self):
+        print 'Welcome to the game, Hangman!'
+        print 'I am thinking of a word that is', len(self.secretWord), ' letters long.'
+        print 'And this word has', self.diffrentLetters(self.secretWord), ' different letters.'
+        print '-------------'
+
     def endMenssenger (self):
         if self.isWordGuessed() == True:
             print 'Congratulations, you won!'
@@ -62,12 +75,10 @@ def hangman():
     guesses = 8
     word = Word(guesses)
 
-    print 'Welcome to the game, Hangman!'
-    print 'I am thinking of a word that is', len(word.secretWord), ' letters long.'
-    print '-------------'
+    word.startMensseger()
 
     while  word.availableWords():
-        print 'You have ', guesses, 'guesses left.'
+        print 'You have ', word.guesses, 'guesses left.'
 
         for letter in word.availableLetters:
             if letter in word.lettersGuessed:
@@ -83,7 +94,7 @@ def hangman():
             print 'Good Guess: ', word.getGuessedWord()
 
         else:
-            guesses -=1
+            word.guesses -=1
             word.lettersGuessed.append(letter)
             print 'Oops! That letter is not in my word: ', word.getGuessedWord()
 
