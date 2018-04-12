@@ -1,7 +1,7 @@
 import random
 import string
 
-WORDLIST_FILENAME = "palavras.txt"
+WORDLIST_FILENAME = "words.txt"
 
 class Word:
     def __init__(self, guesses):
@@ -9,8 +9,15 @@ class Word:
         self.secretWord = self.loadWords()
         self.lettersGuessed = []
         self.availableLetters = string.ascii_lowercase
-        
 
+    def loadOtherWord (self, wordlist):
+        while True:
+            self.secretWord = random.choice(wordlist).lower()
+            if self.differentLetters() <= self.guesses:
+                break
+
+        return self.secretWord
+        
     def loadWords(self):
         """
         Depending on the size of the word list, this function may
@@ -24,7 +31,7 @@ class Word:
         # wordlist: list of strings
         wordlist = string.split(line)
         print "  ", len(wordlist), "words loaded."
-        return random.choice(wordlist)
+        return self.loadOtherWord(wordlist)
 
     def getGuessedWord(self):
         guessed = ''
@@ -58,19 +65,10 @@ class Word:
                 differentLetters.append(letter)
         return len(differentLetters)
 
-    def changeWord (self):
-        if self.differentLetters() > self.guesses:
-            print '-------------'
-            print 'The amount of letters is more than your number of attempts,'
-            print 'we will change the secret word, for you keep playing xD'
-            print 'The word was ', self.secretWord, '.'
-            print '-------------'
-            hangman()
-        else:
-            pass
-
     def startMensseger (self):
+        print '*****************************'
         print 'Welcome to the game, Hangman!'
+        print '*****************************'
         print 'I am thinking of a word that is', len(self.secretWord), ' letters long.'
         print 'And this word has', self.differentLetters(), ' different letters.'
         print '-------------'
@@ -78,9 +76,9 @@ class Word:
     def endMenssenger (self):
         if self.isWordGuessed() == True:
             print 'Congratulations, you won!'
-            exit()
         else:
-            print 'Sorry, you ran out of guesses. The word was ', self.secretWord, '.'
+            print 'Sorry, you ran out of guesses.'
+            print 'The word was ', self.secretWord, '.'
 
 def hangman():
     guesses = 8
@@ -91,7 +89,6 @@ def hangman():
     while  word.availableWords():
         print 'You have ', word.guesses, 'guesses left.'
 
-        word.changeWord()
 
         for letter in word.availableLetters:
             if letter in word.lettersGuessed:
@@ -110,7 +107,6 @@ def hangman():
             word.guesses -=1
             word.lettersGuessed.append(letter)
             print 'Oops! That letter is not in my word: ', word.getGuessedWord()
-
         print '------------'
 
     else:
